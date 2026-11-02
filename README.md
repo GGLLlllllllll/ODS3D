@@ -58,11 +58,14 @@ Training expects exactly one labeled atlas image/label pairs, unlabeled target i
 
 Three teacher checkpoints are required for the default cached-gate training path:
 
-| Checkpoint | Role | Argument |
-| --- | --- | --- |
-| MedSAM2 checkpoint | Main alignment teacher | `--medsam2_ckpt` |
-| SAM2 checkpoint | Gate reference teacher | `--gate_sam2_ckpt` |
-| Medical-SAM2 checkpoint | Gate reference teacher | `--gate_medsam2_ckpt` |
+| Checkpoint | Role | Argument | Download |
+| --- | --- | --- | --- |
+| MedSAM2 checkpoint | Main alignment teacher | `--medsam2_ckpt` | [Download](https://github.com/bowang-lab/MedSAM2) |
+| SAM2 checkpoint | Gate reference teacher | `--gate_sam2_ckpt` | [Download](https://github.com/facebookresearch/sam2) |
+| Medical-SAM2 checkpoint | Gate reference teacher | `--gate_medsam2_ckpt` | [Download](https://github.com/SKKU-IBE/Medical-SAM2GUI/) |
+
+Place the downloaded checkpoints in the `checkpoints/` directory and specify their paths using the corresponding command-line arguments.
+
 
 ## Training
 
