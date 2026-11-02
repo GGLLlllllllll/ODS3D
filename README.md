@@ -1,7 +1,5 @@
 # One-shot, Dual Signals: Less Appearance, More Anatomy for 3D Medical Image Segmentation
 
-This repository contains the research code for **One-shot, Dual Signals: Less Appearance, More Anatomy for 3D Medical Image Segmentation**. The framework jointly learns registration and segmentation from labeled atlases and unlabeled target images.
-
 ## Overview
 
 <p align="center"><img src="fig/1.png" width="90%"></p>
