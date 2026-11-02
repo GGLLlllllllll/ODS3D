@@ -6,10 +6,6 @@ This repository contains the research code for **One-shot, Dual Signals: Less Ap
 
 <p align="center"><img src="fig/1.png" width="90%"></p>
 
-ODSIS combines a shared 3D feature extractor with task-specific registration and segmentation branches. MedSAM2 provides feature-alignment supervision, while degradation-aware training encourages the model to preserve anatomical predictions under image perturbations. The optional cached gate uses two reference teachers to weight the alignment signal spatially. The current training entry point expects five labeled atlases.
-
-The paper citation will be added when the final public metadata is available.
-
 ## Code structure
 
 - `train.py`: five-atlas training and validation.
@@ -17,34 +13,26 @@ The paper citation will be added when the final public metadata is available.
 - `models.py`, `medsam2_align.py`, and `degrade_aware.py`: the main network and auxiliary training components.
 - `data/`, `utils/`, and `sam2/`: data processing and model dependencies.
 
-Datasets and model weights are not included in this repository.
-
 ## Dependencies
 
 The code has been smoke-tested with Python 3.11, PyTorch 2.5.1 + CUDA 12.1, and torchvision 0.20.1. Install a PyTorch build compatible with your GPU by following the [official PyTorch instructions](https://pytorch.org/get-started/locally/), then install the remaining dependencies:
 
 ```bash
 python -m pip install numpy==1.26.4 wheel setuptools
-python -m pip install --no-build-isolation -r requirements.txt
+python -m pip install -r requirements.txt
 ```
-
-The `--no-build-isolation` option is needed when building `GeodisTK` from source. A GPU with more than 8 GB of free memory is recommended for the full 128³ training configuration. The required memory depends on the gate mode and the number of loaded teachers.
 
 ## Dataset preparation
 
-Training expects exactly five labeled atlas image/label pairs, unlabeled target images, and validation images with labels. NIfTI files (`.nii` or `.nii.gz`) are supported. A typical layout is:
+Training expects exactly one labeled atlas image/label pairs, unlabeled target images, and validation images with labels. NIfTI files (`.nii` or `.nii.gz`) are supported. A typical layout is:
 
 ```text
 <DATA_ROOT>/
   atlas/
     vol/
       case_01_vol.nii.gz
-      ...
-      case_05_vol.nii.gz
     seg/
       case_01_seg.nii.gz
-      ...
-      case_05_seg.nii.gz
   train/
     vol/
       case_101_vol.nii.gz
@@ -58,7 +46,7 @@ Training expects exactly five labeled atlas image/label pairs, unlabeled target 
       ...
 ```
 
-The five atlas image and label filenames must have matching stems before `_vol` and `_seg`. Validation labels are found in the sibling `seg` directory. Images are resampled to 128 × 128 × 128 within the training loader. The current label conversion in `data/datasets_mixed.py` is configured for the 14-class brain setting; adapt it before using another label scheme.
+The atlas image and label filenames must have matching stems before `_vol` and `_seg`. Validation labels are found in the sibling `seg` directory. Images are resampled to 128 × 128 × 128 within the training loader. The current label conversion in `data/datasets_mixed.py` is configured for the 14-class brain setting; adapt it before using another label scheme.
 
 ## Pretrained checkpoints and gate cache
 
@@ -70,13 +58,7 @@ Three teacher checkpoints are required for the default cached-gate training path
 | SAM2.1 Hiera Large checkpoint | Gate reference teacher | `--gate_sam2_ckpt` |
 | MedSAM2 pretraining checkpoint (tiny configuration) | Gate reference teacher | `--gate_medsam2_ckpt` |
 
-Use checkpoints that match the configurations in `sam2/configs/`. The gate cache is derived from these checkpoints and the local training/atlas images. With `GATE_BUILD['auto'] = True` in `train.py`, the default training path creates or checks the cache in `--align_gate_dir`. It contains per-case `.npy` maps, `gate_meta.json`, and `gate_coefs.pt`. Rebuild it when the input data or teacher checkpoints change. At least two unlabeled training volumes are needed to fit the cache.
-
-The repository does not supply download links for these checkpoints yet. In particular, the provenance and distribution method for the main MedSAM2 checkpoint must be specified before claiming full reproducibility.
-
 ## Training
-
-Replace the placeholders with paths on your machine. Quote wildcard patterns so the Python loader receives them unchanged.
 
 ```bash
 python train.py \
