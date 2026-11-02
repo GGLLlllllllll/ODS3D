@@ -6,7 +6,7 @@
 
 ## Code structure
 
-- `train.py`: one-atlas training.
+- `train.py`: atlas training.
 - `test_and_save_results.py`: evaluation with trained registration and segmentation checkpoints.
 - `models.py`, `medsam2_align.py`, and `degrade_aware.py`: the main network and auxiliary training components.
 - `data/`, `utils/`, and `sam2/`: data processing and model dependencies.
