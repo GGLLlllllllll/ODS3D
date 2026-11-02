@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ## Dataset preparation
 
-Training expects exactly one labeled atlas image/label pairs, unlabeled target images, and validation images with labels. A typical layout is:
+Training expects exactly atlas image/label pairs, unlabeled target images, and validation images with labels. A typical layout is:
 
 ```text
 <DATA_ROOT>/
