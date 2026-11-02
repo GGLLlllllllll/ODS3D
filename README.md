@@ -2,7 +2,7 @@
 
 ## Overview
 
-<p align="center"><img src="fig/1.png" width="90%"></p>
+<p align="center"><img src="fig/1.png" width="100%"></p>
 
 ## Code structure
 
